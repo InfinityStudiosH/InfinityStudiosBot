@@ -1,0 +1,43 @@
+<h2>📦 Ejemplos JSON para Minecraft</h2>
+
+<div class="json-example">
+  <pre id="json1">{"text":"¡Bienvenido!","color":"aqua","bold":true}</pre>
+  <button onclick="copiarJSON('json1')">📋 Copiar JSON</button>
+</div>
+
+<div class="json-example">
+  <pre id="json2">{"text":"Servidor Oficial","color":"gold","italic":true}</pre>
+  <button onclick="copiarJSON('json2')">📋 Copiar JSON</button>
+</div>
+
+<div class="json-example">
+  <pre id="json3">{"text":"Haz clic aquí","color":"green","underlined":true,"clickEvent":{"action":"open_url","value":"https://minecraft.net"}}</pre>
+  <button onclick="copiarJSON('json3')">📋 Copiar JSON</button>
+</div>
+
+<style>
+  .json-example {
+    background: #222;
+    margin: 1rem auto;
+    padding: 1rem;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    color: #0f0;
+    font-size: 0.9rem;
+    text-align: left;
+  }
+  .json-example pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+</style>
+
+<script>
+  function copiarJSON(id) {
+    const contenido = document.getElementById(id).innerText;
+    navigator.clipboard.writeText(contenido).then(() => {
+      alert("¡JSON copiado!");
+    });
+  }
+</script>
