@@ -123,6 +123,48 @@
       font-size: 1.1rem;
       font-weight: bold;
     }
+
+    /* Estilo para el generador de Lume PFP */
+    .lume-pfp-container {
+      background: #333;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
+      margin-top: 3rem;
+    }
+    .lume-pfp-container h2 {
+      color: #0ff;
+      margin-bottom: 1rem;
+    }
+    .lume-pfp-preview {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin-top: 1rem;
+      background: linear-gradient(to right, #ff0000, #0000ff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 1rem;
+      font-weight: bold;
+      text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
+    }
+    .lume-pfp-input-group input[type="text"] {
+      width: 70%;
+      padding: 0.6rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 2px solid #0ff;
+      background-color: #333;
+      color: white;
+      margin-top: 0.8rem;
+      transition: all 0.3s;
+    }
+    .lume-pfp-input-group input[type="text"]:focus {
+      outline: none;
+      border-color: #ff7700;
+    }
   </style>
 </head>
 <body>
@@ -149,10 +191,22 @@
     <div class="preview" id="preview">Vista previa</div>
 
     <div class="json-box" id="textOutput">
-      &#ff0000&lHydra
+      &#ff0000&lTexto de Ejemplo
     </div>
 
     <button onclick="copiarTexto()">📋 Copiar Código</button>
+  </div>
+
+  <!-- Generador Lume PFP -->
+  <div class="lume-pfp-container">
+    <h2>🖼 Generador de Lume PFP</h2>
+    <div class="lume-pfp-input-group">
+      <input type="text" id="lumePfpText" placeholder="Texto para tu PFP" oninput="generarLumePFP()">
+    </div>
+    <div class="lume-pfp-preview" id="lumePfpPreview">
+      <span id="lumeTextPreview">Hydra</span>
+    </div>
+    <button onclick="copiarLumePfp()">📋 Copiar PFP</button>
   </div>
 
   <script>
@@ -184,6 +238,18 @@
       const text = document.getElementById('textOutput').innerText;
       navigator.clipboard.writeText(text).then(() => {
         alert("✅ Código copiado al portapapeles");
+      });
+    }
+
+    function generarLumePFP() {
+      const text = document.getElementById('lumePfpText').value || "Hydra";
+      document.getElementById('lumeTextPreview').innerText = text;
+    }
+
+    function copiarLumePfp() {
+      const text = document.getElementById('lumeTextPreview').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("✅ Texto copiado al portapapeles para tu PFP");
       });
     }
 
