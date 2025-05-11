@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>HEX & Gradiente Generator para Minecraft</title>
+  <title>Generador de PFP para Minecraft Skin + Hex Generator</title>
   <style>
     * {
       margin: 0;
@@ -41,18 +41,7 @@
     .input-group {
       margin-bottom: 1rem;
     }
-    .input-group input[type="color"] {
-      width: 70px;
-      height: 50px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    .input-group input[type="color"]:hover {
-      transform: scale(1.1);
-    }
-    .input-group input[type="text"] {
+    .input-group input[type="text"], .input-group input[type="url"], .input-group input[type="color"] {
       width: 70%;
       padding: 0.6rem;
       font-size: 1rem;
@@ -63,36 +52,35 @@
       margin-top: 0.8rem;
       transition: all 0.3s;
     }
-    .input-group input[type="text"]:focus {
+    .input-group input[type="text"]:focus, .input-group input[type="url"]:focus, .input-group input[type="color"]:focus {
       outline: none;
       border-color: #ff7700;
     }
     .preview {
       margin-top: 1.5rem;
-      font-size: 1.5rem;
-      font-weight: bold;
-      padding: 1.5rem;
-      border-radius: 8px;
-      background: #333;
-      color: white;
-      text-align: center;
-      transition: all 0.3s;
-      font-family: 'Segoe UI', sans-serif;
-      box-shadow: 0 10px 20px rgba(0, 255, 0, 0.3);
-      max-width: 100%;
-      width: 100%;
+      width: 100px;
+      height: 100px;
+      background-color: #555;
+      border-radius: 50%;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
-    .json-box {
-      background: #1e1e1e;
-      padding: 1rem;
-      margin-top: 1rem;
-      border-radius: 10px;
-      font-family: monospace;
-      color: #0f0;
-      min-height: 60px;
-      box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
-      white-space: pre-wrap;
-      text-align: left;
+    .preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .preview .text {
+      position: absolute;
+      color: white;
+      font-size: 1.2rem;
+      font-weight: bold;
+      text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
+      text-align: center;
+      max-width: 90%;
     }
     button {
       margin-top: 1.5rem;
@@ -112,149 +100,84 @@
     button:active {
       transform: scale(1);
     }
-    .gradient-picker {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      margin-top: 1.5rem;
-    }
-    .gradient-picker label {
-      color: #0ff;
+    .hex-code {
       font-size: 1.1rem;
       font-weight: bold;
-    }
-
-    /* Estilo para el generador de Lume PFP */
-    .lume-pfp-container {
-      background: #333;
-      padding: 1.5rem;
-      border-radius: 10px;
-      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
-      margin-top: 3rem;
-    }
-    .lume-pfp-container h2 {
-      color: #0ff;
-      margin-bottom: 1rem;
-    }
-    .lume-pfp-preview {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
       margin-top: 1rem;
-      background: linear-gradient(to right, #ff0000, #0000ff);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: white;
-      font-size: 1rem;
-      font-weight: bold;
-      text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.7);
-    }
-    .lume-pfp-input-group input[type="text"] {
-      width: 70%;
-      padding: 0.6rem;
-      font-size: 1rem;
-      border-radius: 8px;
-      border: 2px solid #0ff;
-      background-color: #333;
-      color: white;
-      margin-top: 0.8rem;
-      transition: all 0.3s;
-    }
-    .lume-pfp-input-group input[type="text"]:focus {
-      outline: none;
-      border-color: #ff7700;
     }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <h1>🎨 HEX & Gradiente Generator para Minecraft</h1>
-    <p>Selecciona un color o crea un degradado para usar en Minecraft.</p>
+    <h1>🎨 Generador de PFP para Minecraft + Hex Generator</h1>
+    <p>¡Sube tu skin de Minecraft y agrega texto con color personalizado!</p>
 
-    <div class="gradient-picker">
-      <div class="input-group">
-        <label>Color 1:</label>
-        <input type="color" id="colorPicker1" value="#ff0000" oninput="generarTexto()">
-      </div>
-      <div class="input-group">
-        <label>Color 2:</label>
-        <input type="color" id="colorPicker2" value="#0000ff" oninput="generarTexto()">
-      </div>
-    </div>
-
+    <!-- Input para URL de la skin -->
     <div class="input-group">
-      <input type="text" id="textInput" placeholder="Escribe tu texto aquí" oninput="generarTexto()">
+      <input type="url" id="skinUrl" placeholder="Ingresa URL de la skin" oninput="generarPfp()">
     </div>
 
-    <div class="preview" id="preview">Vista previa</div>
-
-    <div class="json-box" id="textOutput">
-      &#ff0000&lTexto de Ejemplo
+    <!-- Input para el texto que se agregará a la imagen -->
+    <div class="input-group">
+      <input type="text" id="textInput" placeholder="Escribe tu texto para el PFP" oninput="generarPfp()">
     </div>
 
-    <button onclick="copiarTexto()">📋 Copiar Código</button>
-  </div>
+    <!-- Input para elegir el color HEX -->
+    <div class="input-group">
+      <input type="color" id="colorPicker" oninput="generarPfp()">
+    </div>
 
-  <!-- Generador Lume PFP -->
-  <div class="lume-pfp-container">
-    <h2>🖼 Generador de Lume PFP</h2>
-    <div class="lume-pfp-input-group">
-      <input type="text" id="lumePfpText" placeholder="Texto para tu PFP" oninput="generarLumePFP()">
+    <!-- Vista previa de la imagen con texto -->
+    <div class="preview" id="pfpPreview">
+      <div class="text" id="pfpTextPreview">Hydra</div>
     </div>
-    <div class="lume-pfp-preview" id="lumePfpPreview">
-      <span id="lumeTextPreview">Hydra</span>
-    </div>
-    <button onclick="copiarLumePfp()">📋 Copiar PFP</button>
+
+    <!-- Mostrar el código hex -->
+    <div class="hex-code" id="hexCode">#ffffff</div>
+
+    <!-- Botón para copiar -->
+    <button onclick="copiarPfp()">📋 Copiar PFP</button>
   </div>
 
   <script>
-    function generarTexto() {
-      const color1 = document.getElementById('colorPicker1').value;
-      const color2 = document.getElementById('colorPicker2').value;
+    function generarPfp() {
+      // Obtener la URL de la skin
+      const skinUrl = document.getElementById('skinUrl').value;
       const text = document.getElementById('textInput').value || "Hydra";
+      const color = document.getElementById('colorPicker').value;
 
-      const isGradient = (color1 !== color2);
-      
-      let finalColor = "";
-      if (isGradient) {
-        finalColor = `linear-gradient(to right, ${color1}, ${color2})`;
-      } else {
-        finalColor = color1;
-      }
+      // Actualizar el color del texto
+      const pfpTextPreview = document.getElementById('pfpTextPreview');
+      pfpTextPreview.style.color = color;
 
-      document.getElementById('preview').style.background = finalColor;
-      document.getElementById('preview').style.color = (isGradient ? 'transparent' : color1);
-      document.getElementById('preview').innerText = text;
+      // Generar la imagen en la vista previa
+      const pfpPreview = document.getElementById('pfpPreview');
+      const imgElement = document.createElement('img');
+      imgElement.src = skinUrl;
 
-      // Generación del código para Minecraft con los colores y formato
-      const formattedText = `&#${color1.slice(1)}&l${text}`;
+      // Limpiar cualquier imagen anterior
+      pfpPreview.innerHTML = '';
 
-      document.getElementById('textOutput').innerText = formattedText;
+      // Agregar la nueva imagen
+      pfpPreview.appendChild(imgElement);
+
+      // Agregar el texto sobre la imagen
+      const textElement = document.getElementById('pfpTextPreview');
+      textElement.innerText = text;
+
+      // Mostrar el código HEX en el cuadro de texto
+      const hexCode = document.getElementById('hexCode');
+      hexCode.innerText = color;
     }
 
-    function copiarTexto() {
-      const text = document.getElementById('textOutput').innerText;
+    function copiarPfp() {
+      // Copiar el texto generado para el PFP
+      const text = document.getElementById('pfpTextPreview').innerText;
       navigator.clipboard.writeText(text).then(() => {
-        alert("✅ Código copiado al portapapeles");
+        alert("✅ PFP copiado al portapapeles");
       });
     }
-
-    function generarLumePFP() {
-      const text = document.getElementById('lumePfpText').value || "Hydra";
-      document.getElementById('lumeTextPreview').innerText = text;
-    }
-
-    function copiarLumePfp() {
-      const text = document.getElementById('lumeTextPreview').innerText;
-      navigator.clipboard.writeText(text).then(() => {
-        alert("✅ Texto copiado al portapapeles para tu PFP");
-      });
-    }
-
-    // Generar al cargar
-    window.onload = generarTexto;
   </script>
 
 </body>
