@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>HEX Generator para Minecraft</title>
+  <title>HEX & Gradiente Generator para Minecraft</title>
   <style>
     body {
       background: #111;
@@ -36,6 +36,8 @@
       margin-top: 1rem;
       font-size: 1.5rem;
       font-weight: bold;
+      padding: 1rem;
+      border-radius: 5px;
     }
     .json-box {
       background: #222;
@@ -58,14 +60,27 @@
     button:hover {
       background: #3f3;
     }
+    .gradient-picker {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
   </style>
 </head>
 <body>
 
-  <h1>🎨 HEX Generator para Minecraft</h1>
-  <p>Selecciona un color, escribe tu texto personalizado y copia el código JSON listo para usar en Minecraft.</p>
+  <h1>🎨 HEX & Gradiente Generator para Minecraft</h1>
+  <p>Selecciona un color o crea un degradado para usar en Minecraft.</p>
 
-  <input type="color" id="colorPicker" value="#ff0000" oninput="generarJSON()">
+  <input type="color" id="colorPicker1" value="#ff0000" oninput="generarJSON()">
+  <input type="color" id="colorPicker2" value="#0000ff" oninput="generarJSON()">
+  
+  <div class="gradient-picker">
+    <label>Color 1:</label><input type="color" id="colorPicker1" value="#ff0000" oninput="generarJSON()">
+    <label>Color 2:</label><input type="color" id="colorPicker2" value="#0000ff" oninput="generarJSON()">
+  </div>
+
   <input type="text" id="textInput" placeholder="Escribe tu texto aquí" oninput="generarJSON()">
 
   <div class="preview" id="preview">Vista previa</div>
@@ -77,13 +92,30 @@
 
   <script>
     function generarJSON() {
-      const color = document.getElementById('colorPicker').value;
+      const color1 = document.getElementById('colorPicker1').value;
+      const color2 = document.getElementById('colorPicker2').value;
       const text = document.getElementById('textInput').value || "Texto personalizado";
+
+      const isGradient = (color1 !== color2);
       
-      document.getElementById('preview').style.color = color;
+      let finalColor = "";
+      if (isGradient) {
+        // Usamos linear-gradient para los degradados
+        finalColor = `linear-gradient(to right, ${color1}, ${color2})`;
+      } else {
+        finalColor = color1;
+      }
+
+      document.getElementById('preview').style.background = finalColor;
+      document.getElementById('preview').style.color = (isGradient ? 'transparent' : color1);
       document.getElementById('preview').innerText = text;
-      document.getElementById('jsonOutput').innerText =
-        `{"text":"${text}","color":"${color}"}`;
+
+      // El formato generado es para Minecraft con degradado o solo color
+      const jsonContent = isGradient 
+        ? `{"text":"${text}","color":"${finalColor}"}`
+        : `{"text":"${text}","color":"${color1}"}`;
+
+      document.getElementById('jsonOutput').innerText = jsonContent;
     }
 
     function copiarJSON() {
