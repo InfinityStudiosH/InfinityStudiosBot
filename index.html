@@ -3,23 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lume PFP - alnso</title>
+  <title>Lume PFP - Shadow</title>
   <link rel="icon" href="logo.png" type="image/png">
   <style>
     :root {
-      --primary: #6C5CE7;
-      --secondary: #00CEC9;
-      --bg: #1e1e2f;
+      --primary: #ff2d2d;
+      --secondary: #8b0000;
+      --bg: #000000;
       --text: #ffffff;
-      --accent: #fd79a8;
+      --accent: #ff5e5e;
     }
 
     body.light {
-      --bg: #f2f2f2;
-      --text: #1e1e2f;
-      --primary: #6C5CE7;
-      --secondary: #00CEC9;
-      --accent: #fd79a8;
+      --bg: #ffffff;
+      --text: #000000;
+      --primary: #ff2d2d;
+      --secondary: #d32f2f;
+      --accent: #ff8a8a;
     }
 
     * {
@@ -74,15 +74,15 @@
     }
 
     .preview-section, .controls-section {
-      background-color: #2f2f46;
+      background-color: #1a1a1a;
       border-radius: 1rem;
       padding: 2rem;
-      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
     }
 
     body.light .preview-section,
     body.light .controls-section {
-      background-color: #ffffff;
+      background-color: #fff0f0;
     }
 
     .preview-container {
@@ -137,7 +137,7 @@
     }
 
     .btn-primary:hover {
-      background-color: #4b3dbf;
+      background-color: #cc0000;
     }
 
     .btn-secondary {
@@ -146,7 +146,7 @@
     }
 
     .btn-secondary:hover {
-      background-color: #00a4a4;
+      background-color: #a00000;
     }
 
     .search-input {
@@ -170,7 +170,7 @@
 
     .view-option {
       flex: 1;
-      background-color: #38385a;
+      background-color: #2a2a2a;
       padding: 1rem;
       border-radius: 0.75rem;
       text-align: center;
@@ -192,19 +192,6 @@
       border: 2px solid var(--accent);
     }
 
-    .instructions ul {
-      margin-left: 1.5rem;
-      margin-top: 0.5rem;
-    }
-
-    .instructions li {
-      margin-bottom: 0.5rem;
-    }
-
-    .credits ul {
-      margin-left: 1.5rem;
-    }
-
     .toast {
       position: fixed;
       bottom: 20px;
@@ -216,24 +203,6 @@
       display: none;
       align-items: center;
       gap: 0.5rem;
-    }
-
-    .toast-icon {
-      width: 24px;
-      height: 24px;
-    }
-
-    .discord-contact {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-    }
-
-    .discord-icon {
-      width: 24px;
-      height: 24px;
-      color: white;
     }
   </style>
 </head>
@@ -254,34 +223,48 @@
             <img id="skinImage" class="preview-img" src="https://starlightskins.lunareclipse.studio/render/profile/Steve/bust" alt="Skin del jugador" crossorigin="anonymous">
           </div>
           <div class="action-buttons">
-            <button class="btn btn-primary">Descargar</button>
-            <button class="btn btn-secondary">Copiar</button>
+            <button class="btn btn-primary" onclick="downloadImage()">Descargar</button>
+            <button class="btn btn-secondary" onclick="copyImageURL()">Copiar</button>
           </div>
         </div>
         <div class="controls-section">
-          <input type="text" class="search-input" placeholder="Nombre del jugador...">
-          <div class="view-options-grid">
-            <div class="view-option active">Superior</div>
-            <div class="view-option">Completo</div>
-            <div class="view-option">Cara</div>
-          </div>
+          <input type="text" class="search-input" placeholder="Nombre del jugador..." oninput="updateUsername(this.value)">
         </div>
       </div>
     </div>
   </main>
 
   <footer>
-    <div class="discord-contact">
-      <svg class="discord-icon" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515..."></path>
-      </svg>
-      <span>ag.sst</span>
+    <div class="container">
+      <p>Contacto: ag.sst</p>
     </div>
   </footer>
 
   <script>
     function toggleTheme() {
       document.body.classList.toggle("light");
+    }
+
+    function updateUsername(username) {
+      document.getElementById("usernameDisplay").textContent = username || "Steve";
+      document.getElementById("skinImage").src = `https://starlightskins.lunareclipse.studio/render/profile/${username || "Steve"}/bust`;
+    }
+
+    function downloadImage() {
+      const img = document.getElementById("skinImage");
+      const link = document.createElement("a");
+      link.href = img.src;
+      link.download = "skin.png";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function copyImageURL() {
+      const url = document.getElementById("skinImage").src;
+      navigator.clipboard.writeText(url).then(() => {
+        alert("URL copiada al portapapeles");
+      });
     }
   </script>
 </body>
